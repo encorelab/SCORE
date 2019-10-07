@@ -1,25 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { AnnouncementComponent } from './announcement.component';
 import { configureTestSuite } from 'ng-bullet';
-import { Announcement } from '../domain/announcement';
-import { MatDialog } from '@angular/material';
-import { By } from '@angular/platform-browser';
+import { ExpectedConditions } from 'protractor';
 
 describe('AnnouncementComponent', () => {
   let component: AnnouncementComponent;
   let fixture: ComponentFixture<AnnouncementComponent>;
 
+  
   configureTestSuite(() => {
     TestBed.configureTestingModule({
       declarations: [ AnnouncementComponent ],
-      providers: [
-        { provide: MatDialog, useValue: {
-            closeAll: () => {
-            }
-          }
-        }
-      ],
       schemas: [ NO_ERRORS_SCHEMA ]
     });
   });
@@ -27,6 +19,8 @@ describe('AnnouncementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AnnouncementComponent);
     component = fixture.componentInstance;
+    component.message = 'This is an announcement.';
+    component.action = 'Do something';
     fixture.detectChanges();
   });
 
@@ -34,22 +28,17 @@ describe('AnnouncementComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show the banner text and button', () => {
-    component.announcement = new Announcement()
-    component.announcement.visible = true;
-    component.announcement.bannerText = 'This is an announcement.';
-    component.announcement.bannerButton = 'Do something';
-    fixture.detectChanges();
+  it('should show the message', () => {
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.textContent).toContain('This is an announcement.');
-    expect(compiled.textContent).toContain('Do something');
+    if (compiled.show) {
+      expect(compiled.textContent).toContain('This is an announcement.');
+    }
   });
 
-  it('should emit dismiss event on dismiss button click', async() => {
-    spyOn(component.doDismiss, 'emit');
-    const dismissButton = fixture.debugElement.query(By.css('.announcement__dismiss')).nativeElement;
-    dismissButton.click();
-    fixture.detectChanges();
-    expect(component.doDismiss.emit).toHaveBeenCalled();
+  it('should show the action', () => {
+    const compiled = fixture.debugElement.nativeElement;
+    if (compiled.show) {
+      expect(compiled.textContent).toContain('Do something');
+    } 
   });
 });

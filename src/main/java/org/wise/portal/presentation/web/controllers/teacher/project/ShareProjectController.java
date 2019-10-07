@@ -193,11 +193,11 @@ public class ShareProjectController {
     }
 
     String sharedOwnerUsername = params.getSharedOwnerUsername();
-    User user = userService.retrieveUserByUsername(sharedOwnerUsername);
-    if (user == null) {
+    User retrievedUser = userService.retrieveUserByUsername(sharedOwnerUsername);
+    if (retrievedUser == null) {
       model.addAttribute("message", "Username not recognized. Make sure to use the exact spelling of the username.");
       view = formView;
-    }  else if (!user.isTeacher()) {
+    }  else if (!retrievedUser.getUserDetails().hasGrantedAuthority(UserDetailsService.TEACHER_ROLE)) {
       model.addAttribute("message", "The user is not a teacher and thus cannot be added as a shared teacher.");
       view = formView;
     }  else {
@@ -216,10 +216,10 @@ public class ShareProjectController {
       try {
         String removeUserFromProject = request.getParameter("removeUserFromProject");
         if (removeUserFromProject != null && Boolean.valueOf(removeUserFromProject)) {
-          projectService.removeSharedTeacherFromProject(project, user);
+          projectService.removeSharedTeacherFromProject(sharedOwnerUsername, project);
         } else {
           boolean newSharedOwner = false;
-          if (!project.getSharedowners().contains(user)) {
+          if (!project.getSharedowners().contains(retrievedUser)) {
             newSharedOwner = true;
           }
 
@@ -227,8 +227,8 @@ public class ShareProjectController {
           if (newSharedOwner) {
             String contextPath = request.getContextPath();
             Locale locale = request.getLocale();
-            ShareProjectEmailService emailService = new ShareProjectEmailService(signedInUser, user,
-                project, ControllerUtil.getBaseUrlString(request),locale, contextPath);
+            ShareProjectEmailService emailService =
+              new ShareProjectEmailService(signedInUser, retrievedUser, project, ControllerUtil.getBaseUrlString(request),locale, contextPath);
             Thread thread = new Thread(emailService);
             thread.start();
           }
@@ -271,9 +271,8 @@ public class ShareProjectController {
       HttpServletResponse response) throws Exception {
     Long projectId = new Long(projectIdStr);
     Project project = projectService.getById(projectId);
-    String username = ControllerUtil.getSignedInUser().getUserDetails().getUsername();
-    User user = userService.retrieveUserByUsername(username);
-    projectService.removeSharedTeacherFromProject(project, user);
+    String usernameToRemove = ControllerUtil.getSignedInUser().getUserDetails().getUsername();
+    projectService.removeSharedTeacherFromProject(usernameToRemove, project);
     response.getWriter().write("success");
   }
 

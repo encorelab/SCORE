@@ -168,8 +168,4 @@ public interface Portal extends Persistable {
   void setProjectLibraryGroups(String projectLibraryGroups);
 
   String getProjectLibraryGroups();
-
-  void setAnnouncement(String announcement);
-
-  String getAnnouncement();
 }

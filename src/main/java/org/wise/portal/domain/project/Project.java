@@ -148,6 +148,4 @@ public interface Project extends Persistable {
   boolean isCommunityProject();
 
   boolean hasTag(String tag);
-
-  boolean isSharedTeacher(User user);
 }

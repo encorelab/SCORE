@@ -88,10 +88,8 @@ public class WebSecurityConfig<S extends Session> extends WebSecurityConfigurerA
         .addFilterAfter(authenticationProcessingFilter(), GoogleOpenIdConnectFilter.class)
         .authorizeRequests()
         .antMatchers("/admin/**").hasAnyRole("ADMINISTRATOR,RESEARCHER")
-        .antMatchers("/project/notifyAuthor*/**").hasAnyRole("TEACHER")
-        .antMatchers("/student/**").hasAnyRole("STUDENT")
-        .antMatchers("/studentStatus").hasAnyRole("TEACHER,STUDENT")
-        .antMatchers("/teacher/**").hasAnyRole("TEACHER")
+        .antMatchers("/teacher/**").hasAnyRole("ADMINISTRATOR,TEACHER")
+        .antMatchers("/student/**").hasAnyRole("ADMINISTRATOR,STUDENT")
         .antMatchers("/").permitAll();
     http.formLogin().loginPage("/login").permitAll();
     http.sessionManagement().maximumSessions(2).sessionRegistry(sessionRegistry());

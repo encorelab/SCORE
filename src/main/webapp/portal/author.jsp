@@ -6,15 +6,15 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>WISE Authoring Tool</title>
+        <title>SCORE Authoring Tool</title>
         <base href="${contextPath}/" target="_blank">
         <meta name="description" content="WISE Authoring Tool">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <%@ include file="favicon.jsp"%>
         <script src="${contextPath}/wise5/lib/sockjs/sockjs.min.js"></script>
         <script src="${contextPath}/wise5/jspm_packages/system.js"></script>
-        <script src="${contextPath}/wise5/config.js?v=5.8.0"></script>
-        <script src="${contextPath}/wise5/cacheBuster.js?v=5.8.0"></script>
+        <script src="${contextPath}/wise5/config.js?v=5.7.8"></script>
+        <script src="${contextPath}/wise5/cacheBuster.js?v=5.7.8"></script>
         <script>
             System.import('${contextPath}/wise5/authoringTool/bootstrap');
         </script>

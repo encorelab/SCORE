@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import org.json.JSONObject;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.transaction.annotation.Transactional;
@@ -162,7 +161,7 @@ public interface RunService {
 
   @Secured( {"ROLE_TEACHER"} )
   @Transactional()
-  SharedOwner addSharedTeacher(Long runId, String username)
+  SharedOwner addSharedTeacher(Long runId, String teacherUsername)
       throws ObjectNotFoundException, TeacherAlreadySharedWithRunException;
 
   @Secured( {"ROLE_TEACHER"} )
@@ -439,7 +438,4 @@ public interface RunService {
   boolean isAllowedToGradeStudentWork(Run run, User user);
 
   boolean isAllowedToViewStudentNames(Run run, User user);
-
-  JSONObject transferRunOwnership(Long runId, String teacherUsername)
-      throws ObjectNotFoundException;
 }

@@ -15,11 +15,11 @@ rm -rf $CATALINA_BASE/webapps/ROOT
 cd $WISE_BUILD_DIR
 git log -n 5
 ./wise.sh package
-if [ "$DEPLOYMENT_GROUP_NAME" == "qa-deployment-group" ] || [ "$1" == "qa" ];
+if [ $DEPLOYMENT_GROUP_NAME == "qa-deployment-group" ];
 then
     mv $WISE_BUILD_DIR/target/wise.war $QA_BUILD_DIR
     cd $QA_BUILD_DIR
-elif [ "$DEPLOYMENT_GROUP_NAME" == "prod-deployment-group" ] || [ "$1" == "prod" ];
+elif [ $DEPLOYMENT_GROUP_NAME == "prod-deployment-group" ];
 then
     mv $WISE_BUILD_DIR/target/wise.war $PROD_BUILD_DIR
     cd $PROD_BUILD_DIR

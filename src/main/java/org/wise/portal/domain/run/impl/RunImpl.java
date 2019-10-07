@@ -522,8 +522,4 @@ public class RunImpl implements Run {
       return true;
     }
   }
-
-  public boolean isSharedTeacher(User user) {
-    return this.getSharedowners().contains(user);
-  }
 }

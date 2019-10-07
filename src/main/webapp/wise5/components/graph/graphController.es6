@@ -67,7 +67,6 @@ class GraphController extends ComponentController {
     this.addNextComponentStateToUndoStack = false;
     this.chartId = 'chart_' + this.componentId;
     this.hiddenCanvasId = 'hiddenCanvas_' + this.componentId;
-    this.applyHighchartsPlotLinesLabelFix();
     this.initializeComponentContentParams();
     const componentState = this.$scope.componentState;
     if (this.isStudentMode()) {
@@ -93,16 +92,6 @@ class GraphController extends ComponentController {
     this.initializeScopeGetComponentState(this.$scope, 'graphController');
     this.drawGraph().then(() => {
       this.broadcastDoneRenderingComponent();
-    });
-  }
-
-  applyHighchartsPlotLinesLabelFix() {
-    Highcharts.wrap(Highcharts.Axis.prototype, 'getPlotLinePath', function(proceed) {
-      var path = proceed.apply(this, Array.prototype.slice.call(arguments, 1));
-      if (path) {
-        path.flat = false;
-      }
-      return path;
     });
   }
 
@@ -470,12 +459,10 @@ class GraphController extends ComponentController {
 
   clearPlotLines() {
     const chart = Highcharts.charts[0];
-    if (chart != null) {
-      const chartXAxis = chart.xAxis[0];
-      chartXAxis.removePlotLine('plot-line-x');
-      const chartYAxis = chart.yAxis[0];
-      chartYAxis.removePlotLine('plot-line-y');
-    }
+    const chartXAxis = chart.xAxis[0];
+    chartXAxis.removePlotLine('plot-line-x');
+    const chartYAxis = chart.yAxis[0];
+    chartYAxis.removePlotLine('plot-line-y');
   }
 
   /**
@@ -549,7 +536,6 @@ class GraphController extends ComponentController {
    */
   drawGraphHelper(deferred) {
     const title = this.componentContent.title;
-    const subtitle = this.componentContent.subtitle;
     const xAxis = this.setupXAxis();
     const yAxis = this.setupYAxis();
     this.setupWidth();
@@ -576,8 +562,7 @@ class GraphController extends ComponentController {
       xAxis.plotLines = this.plotLines;
     }
     const zoomType = this.getZoomType();
-    this.chartConfig = this.createChartConfig(deferred, title, subtitle, xAxis, yAxis, series,
-        zoomType);
+    this.chartConfig = this.createChartConfig(deferred, title, xAxis, yAxis, series, zoomType);
     if (this.componentContent.useCustomLegend) {
       // use a timeout so the graph has a chance to render before we set the custom legend
       this.$timeout(() => {
@@ -658,23 +643,12 @@ class GraphController extends ComponentController {
   }
 
   setAllSeriesFields(series) {
-    const canAllSeriesMouseTrack = this.getNumberOfEditableSeries(series) === 0;
     for (const singleSeries of series) {
-      this.setSingleSeriesFields(singleSeries, canAllSeriesMouseTrack);
+      this.setSingleSeriesFields(singleSeries);
     }
   }
 
-  getNumberOfEditableSeries(series) {
-    let numberOfEditableSeries = 0;
-    for (const singleSeries of series) {
-      if (singleSeries.canEdit) {
-        numberOfEditableSeries++;
-      }
-    }
-    return numberOfEditableSeries;
-  }
-
-  setSingleSeriesFields(singleSeries, canAllSeriesMouseTrack) {
+  setSingleSeriesFields(singleSeries) {
     if (singleSeries.canEdit && this.isActiveSeries(singleSeries)) {
       if (this.graphType === 'line' || this.graphType === 'scatter') {
         singleSeries.draggableX = true;
@@ -694,7 +668,7 @@ class GraphController extends ComponentController {
       singleSeries.stickyTracking = false;
       singleSeries.shared = false;
       singleSeries.allowPointSelect = false;
-      singleSeries.enableMouseTracking = canAllSeriesMouseTrack;
+      singleSeries.enableMouseTracking = false;
     }
     if (singleSeries.allowPointMouseOver === true) {
       singleSeries.allowPointSelect = true;
@@ -719,7 +693,7 @@ class GraphController extends ComponentController {
     };
   }
 
-  createChartConfig(deferred, title, subtitle, xAxis, yAxis, series, zoomType) {
+  createChartConfig(deferred, title, xAxis, yAxis, series, zoomType) {
     const chartConfig = {
       options: {
         legend: {
@@ -766,12 +740,7 @@ class GraphController extends ComponentController {
       },
       series: series,
       title: {
-        text: title,
-        useHTML: true
-      },
-      subtitle: {
-        text: subtitle,
-        useHTML: true
+        text: title
       },
       xAxis: xAxis,
       yAxis: yAxis,
@@ -822,7 +791,7 @@ class GraphController extends ComponentController {
   }
 
   isLimitXAxisType(xAxis) {
-    return xAxis.type === 'limits' || xAxis.type == null;
+    return xAxis.type === 'limits';
   }
 
   isCategoriesXAxisType(xAxis) {

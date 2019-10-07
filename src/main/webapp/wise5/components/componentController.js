@@ -839,7 +839,7 @@ function () {
   }, {
     key: "isAddToNotebookEnabled",
     value: function isAddToNotebookEnabled() {
-      return this.isNotebookEnabled() && this.isStudentNoteClippingEnabled() && this.showAddToNotebookButton;
+      return this.isNotebookEnabled() && this.isStudentNoteClippingEnabled();
     }
     /**
      * Set the show submit button value

@@ -135,19 +135,19 @@ export class ContactFormComponent implements OnInit {
     if (this.isStudent) {
       this.issueTypes = [
         { key: "TROUBLE_LOGGING_IN", value: this.i18n("Trouble Signing In") },
-        { key: "NEED_HELP_USING_WISE", value: this.i18n("Need Help Using WISE") },
-        { key: "PROJECT_PROBLEMS", value: this.i18n("Problems with a WISE Unit") },
-        { key: "FEEDBACK", value: this.i18n("Feedback to WISE") },
+        { key: "NEED_HELP_USING_WISE", value: this.i18n("Need Help Using SCORE") },
+        { key: "PROJECT_PROBLEMS", value: this.i18n("Problems with a SCORE Unit") },
+        { key: "FEEDBACK", value: this.i18n("Feedback to SCORE") },
         { key: "OTHER", value: this.i18n("Other") }
       ];
     } else {
       this.issueTypes = [
         { key: "TROUBLE_LOGGING_IN", value: this.i18n("Trouble Signing In") },
-        { key: "NEED_HELP_USING_WISE", value: this.i18n("Need Help Using WISE") },
-        { key: "PROJECT_PROBLEMS", value: this.i18n("Problems with a WISE Unit") },
+        { key: "NEED_HELP_USING_WISE", value: this.i18n("Need Help Using SCORE") },
+        { key: "PROJECT_PROBLEMS", value: this.i18n("Problems with a SCORE Unit") },
         { key: "STUDENT_MANAGEMENT", value: this.i18n("Student Management") },
         { key: "AUTHORING", value: this.i18n("Need Help with Authoring") },
-        { key: "FEEDBACK", value: this.i18n("Feedback to WISE") },
+        { key: "FEEDBACK", value: this.i18n("Feedback to SCORE") },
         { key: "OTHER", value: this.i18n("Other") }
       ];
     }

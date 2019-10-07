@@ -46,8 +46,6 @@ public class PortalServiceImpl implements PortalService {
 
   private String defaultProjectLibraryGroups = "[{\"name\":\"Integrated\",\"id\":\"integrated\",\"type\":\"group\",\"children\":[{\"name\":\"Grade6\",\"id\":\"grade6\",\"type\":\"group\",\"children\":[]},{\"name\":\"Grade7\",\"id\":\"grade7\",\"type\":\"group\",\"children\":[]},{\"name\":\"Grade8\",\"id\":\"grade8\",\"type\":\"group\",\"children\":[]}]},{\"name\":\"DisciplineSpecific\",\"id\":\"disciplineSpecific\",\"type\":\"group\",\"children\":[]},{\"name\":\"Grade7\",\"id\":\"grade7\",\"type\":\"group\",\"children\":[]},{\"name\":\"Grade8\",\"id\":\"grade8\",\"type\":\"group\",\"children\":[]}]";
 
-  private String defaultAnnouncement = "{\"visible\":false,\"bannerText\":\"\",\"bannerButton\":\"\",\"title\":\"\",\"content\":\"\",\"buttons\":[]}";
-
   public Portal getById(Serializable id) throws ObjectNotFoundException {
     return portalDao.getById(id);
   }
@@ -75,9 +73,5 @@ public class PortalServiceImpl implements PortalService {
 
   public String getDefaultProjectLibraryGroups() {
     return this.defaultProjectLibraryGroups;
-  }
-
-  public String getDefaultAnnouncement() {
-    return this.defaultAnnouncement;
   }
 }

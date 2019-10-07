@@ -1,4 +1,4 @@
-Web-based Inquiry Science Environment (WISE) 
+SCORE
 ====
 
 [![Join the chat at https://gitter.im/WISE-Community/WISE](https://badges.gitter.im/WISE-Community/WISE.svg)](https://gitter.im/WISE-Community/WISE?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

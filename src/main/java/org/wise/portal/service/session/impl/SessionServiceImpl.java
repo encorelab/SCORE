@@ -1,9 +1,11 @@
 package org.wise.portal.service.session.impl;
 
+import java.io.Serializable;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
 import org.wise.portal.domain.authentication.impl.StudentUserDetails;
@@ -11,18 +13,11 @@ import org.wise.portal.domain.authentication.impl.TeacherUserDetails;
 import org.wise.portal.domain.project.Project;
 import org.wise.portal.service.session.SessionService;
 
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Set;
-
 @Service
 public class SessionServiceImpl<S extends Session> implements SessionService {
 
   @Autowired
   private StringRedisTemplate stringRedisTemplate;
-
-  @Autowired
-  private FindByIndexNameSessionRepository<S> sessionRepository;
 
   public void addSignedInUser(UserDetails userDetails) {
     System.out.println("addSignedInUser");
@@ -50,14 +45,11 @@ public class SessionServiceImpl<S extends Session> implements SessionService {
   public void removeSignedInUser(UserDetails userDetails) {
     System.out.println("removeSignedInUser");
     String username = userDetails.getUsername();
-    Map<String, S> sessions = sessionRepository.findByPrincipalName(username);
-    if (sessions.size() <= 1) {
-      stringRedisTemplate.opsForSet().remove("signedInUsers", userDetails.getUsername());
-      if (userDetails instanceof StudentUserDetails) {
-        stringRedisTemplate.opsForSet().remove("signedInStudents", userDetails.getUsername());
-      } else if (userDetails instanceof TeacherUserDetails) {
-        stringRedisTemplate.opsForSet().remove("signedInTeachers", userDetails.getUsername());
-      }
+    stringRedisTemplate.opsForSet().remove("signedInUsers", username);
+    if (userDetails instanceof StudentUserDetails) {
+      stringRedisTemplate.opsForSet().remove("signedInStudents", username);
+    } else if (userDetails instanceof TeacherUserDetails) {
+      stringRedisTemplate.opsForSet().remove("signedInTeachers", username);
     }
     outputSignedInUsers();
     outputSignedInStudents();

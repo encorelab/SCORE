@@ -1,14 +1,21 @@
 <div class="tab-container" fxLayout="column" fxLayoutAlign="start stretch">
     <h2>Task Information {{selectionTitle}}</h2>
     <br>
-    <mat-form-field>
-        <mat-label>Select Period:</mat-label>
-        <mat-select (selectionChange)="periodSelectionChange($event)">
-            <mat-option *ngFor="let period of periods" [value]="period.name">
-                {{period.name}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="start center" >
+        <mat-form-field>
+            <mat-label>Select Period:</mat-label>
+            <mat-select (selectionChange)="periodSelectionChange($event)">
+                <mat-option *ngFor="let period of periods" [value]="period.name">
+                    {{period.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button style="margin-left: 10px" mat-flat-button color="primary" class="buttons"
+                (click)="refreshTasks()">
+            <mat-icon>refresh</mat-icon>
+        </button>
+    </div>
     <div class="mat-elevation-z1">
         <table [dataSource]="tasksDataSource" mat-table matSort>
             <!-- Position Column -->
@@ -35,7 +42,7 @@
             </ng-container>
             <ng-container matColumnDef="duration">
                 <th *matHeaderCellDef mat-header-cell mat-sort-header style="text-align: center">Duration (min)</th>
-                <td *matCellDef="let task" mat-cell> {{task.duration/60.0}} </td>
+                <td *matCellDef="let task" mat-cell> {{task.duration / 60.0}} </td>
             </ng-container>
             <ng-container matColumnDef="startTime">
                 <th *matHeaderCellDef mat-header-cell mat-sort-header style="text-align: center">Start Time</th>

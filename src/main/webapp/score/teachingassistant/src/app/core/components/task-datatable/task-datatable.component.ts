@@ -44,6 +44,7 @@ export class TaskDatatableComponent implements OnInit {
         this.tasksDataSource.sort = this.sort;
         this.refreshRunInformation();
         this.refreshTasks();
+        this.setupRefreshTimer();
     }
 
     resetAttributes() {
@@ -124,5 +125,12 @@ export class TaskDatatableComponent implements OnInit {
             console.log('Task Request', taskRequest);
         });
 
+    }
+
+    private setupRefreshTimer() {
+        setInterval(() => {
+            this.refreshTasks();
+            console.log('calling')
+        }, 10000);  // 60000 milliseconds interval
     }
 }
